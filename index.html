@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kaart van NL</title>
+<script src="js/d3.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div id="container"><h1>De steden van Nederland</h1></div>
+<script>
+var canvas = d3.select("#container").append("svg")
+	.attr("width", 980)
+	.attr("height", 780)
+	
+d3.json("json/shertogenbosch.geojson", function (data) {
+	
+	var group = canvas.selectAll("g")
+		.data(data.features)
+		.enter()
+		.append("g");
+		
+		console.log(data.features);
+		
+	var projection = d3.geo.mercator().scale(8000).translate([-300,8900]);
+	var path = d3.geo.path().projection(projection);
+	
+	var areas = group.append("path")
+		.attr("d", path)
+		.attr("class", "area")
+		.attr("stroke", "white")
+		.attr("stroke-width", 1)
+		.attr("fill", "#F96");
+		
+	canvas.selectAll('t')
+    .data(data.features)
+  .enter().append('text')
+  .attr("x", function (d) { return (path.centroid(d)[0])})
+		.attr("y", function (d) { return (path.centroid(d)[1])-10})
+		.attr("text-anchor", "middle")
+		.transition()
+       .delay(function(d, i) {
+              return i * 4000;               
+              })
+              .duration(4000)
+		.text(function (d) {  return d.properties.NAME_2; }).remove();
+	
+	 canvas.selectAll("circle")
+           .data(data.features)
+           .enter().append("circle")
+		     .transition()
+       .delay(function(d, i) {
+              return i * 4000;               
+              })
+           .attr("cx", function(d) {
+                   return (path.centroid(d)[0]);
+           })
+           .attr("cy", function(d) {
+                   return (path.centroid(d)[1]);
+           }).attr("r", 5)
+           .style("fill", "red")
+              .duration(4000).remove();
+	
+
+
+	
+	
+		
+});
+</script>
+</body>
+</html>

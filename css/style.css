@@ -1,0 +1,21 @@
+@charset "UTF-8";
+/* CSS Document */
+
+path {
+	z-index:5;
+	
+}
+
+text {
+	z-index:100;
+	
+}
+.area { z-index:4;}
+
+#container {
+	width:980px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
